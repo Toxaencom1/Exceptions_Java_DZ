@@ -21,32 +21,70 @@ public class Task3 {
         System.out.println("Hello user, This program check some conditions of three numbers!\n");
         Scanner scanner = new Scanner(System.in);
         int num1, num2, num3;
+        boolean flag = true;
         try {
             System.out.print("Enter first number: ");
             num1 = scanner.nextInt();
-            if (num1 > 100) {
-                throw new NumberOutOfRangeException("First number is out of range!");
-            }
             System.out.print("Enter second number: ");
             num2 = scanner.nextInt();
-            if (num2 < 0) {
-                throw new NumberOutOfRangeException("Second number is out of range!");
-            }
-            if (num1 + num2 < 10) {
-                throw new NumberSumException("Sum of first and second numbers is too low!");
-            }
             System.out.print("Enter third number: ");
             num3 = scanner.nextInt();
-            if (num3 == 0) {
-                throw new DivisionByZeroException("You can`t divide by zero!");
+            try {
+                checkNum1(num1);
+            } catch (NumberOutOfRangeException e) {
+                System.err.println("Error: " + e.getMessage());
+                flag = false;
             }
-            System.out.println("Check passed successfully");
-        } catch (NumberOutOfRangeException | NumberSumException | DivisionByZeroException e) {
-            System.err.println("Error: " + e.getMessage());
+            try {
+                checkNum2(num2);
+            } catch (NumberOutOfRangeException e) {
+                System.err.println("Error: " + e.getMessage());
+                flag = false;
+            }
+            try {
+                checkSum(num1, num2);
+            } catch (NumberSumException e) {
+                System.err.println("Error: " + e.getMessage());
+                flag = false;
+            }
+            try {
+                checkDivide(num3);
+            } catch (DivisionByZeroException e) {
+                System.err.println("Error: " + e.getMessage());
+                flag = false;
+            }
         } catch (InputMismatchException ex) {
             System.err.println("Wrong input!");
+            flag = false;
         } finally {
+            if (flag) {
+                System.out.println("Check passed successfully");
+            }
             scanner.close();
+        }
+    }
+
+    public static void checkNum1(int num) throws NumberOutOfRangeException {
+        if (num > 100) {
+            throw new NumberOutOfRangeException("First number is out of range!");
+        }
+    }
+
+    public static void checkNum2(int num) throws NumberOutOfRangeException {
+        if (num < 0) {
+            throw new NumberOutOfRangeException("Second number is out of range!");
+        }
+    }
+
+    public static void checkSum(int num1, int num2) throws NumberSumException {
+        if (num1 + num2 < 10) {
+            throw new NumberSumException("Sum of first and second numbers is too low!");
+        }
+    }
+
+    public static void checkDivide(int num) throws DivisionByZeroException {
+        if (num == 0) {
+            throw new DivisionByZeroException("You can`t divide by zero!");
         }
     }
 }
